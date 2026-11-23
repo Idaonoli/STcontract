@@ -112,7 +112,10 @@ append-only collections. The rule of thumb for new keys is:
 
 Every current `DataKey` / `DataKey2` variant is classified in
 [docs/storage-keys.md](docs/storage-keys.md), along with the rationale and the
-race-freedom argument for `TotalActiveEnrollments`.
+race-freedom argument for `TotalActiveEnrollments`. Per-record TTL renewal
+(and which records can expire after inactivity) is in
+[docs/storage-ttl.md](docs/storage-ttl.md). Before changing any key or stored
+struct, follow [docs/storage-key-checklist.md](docs/storage-key-checklist.md).
 
 ---
 
@@ -492,6 +495,15 @@ When a release changes a stored struct (`Course`, `Enrollment`, `Certificate`, .
 ```bash
 make build      # → target/wasm32v1-none/release/sorobanlard.wasm
 make optimize   # → target/wasm32v1-none/release/sorobanlard.optimized.wasm
+```
+
+Deploy only `sorobanlard.optimized.wasm`. Verify its checksum and generate a
+release manifest as described in
+[docs/release-artifacts.md](docs/release-artifacts.md):
+
+```bash
+sha256sum contracts/sorobanlard/target/wasm32v1-none/release/sorobanlard.optimized.wasm
+scripts/release-manifest.sh
 ```
 
 ---
